@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Fire Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+    <!-- leaflet import -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <!-- location -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" /> -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+
+    .coordinate {
+      position: absolute;
+      bottom: 10px;
+      right: 50%;
+    }
+
+
+    .leaflet-popup-content-wrapper {
+      background-color: #000000;
+      color: #fff;
+      border: 1px solid red;
+      border-radius: 0px;
+    }
+    .leaflet-routing-container{
+    background-color: #f2f2f2;
+    background-size: auto;
+      }
+    
+  </style>
+</head>
+
+<body>
+  <!-- Image and text -->
+  <header>
+   
+    <h1>Fire Tracking System</h1>
+    
+
+    <!-- <nav>
+       
+    </nav> -->
+   
+</header>
+
+
+
+  <div id="map">
+    <div class="leaflet-control coordinate"></div>
+  </div>
+
+  </div>
+</body>
+
+</html>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+
+  </script>
+  <!-- bootstrap -->
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+  
+
+<!-- location -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<!-- routing -->
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<script src="pointjson.js"></script>
+<script src="s_npp.js"></script>
+<script src="s_npp_375.js"></script>
+<script>
+  var map = L.map('map').setView([20.5937, 78.9629], 6);
+
+  var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  });
+  osm.addTo(map);
+  // water color 
+  var watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: 'abcd',
+    minZoom: 1,
+    maxZoom: 16,
+    ext: 'jpg'
+  });
+  // watercolor.addTo(map)
+  var dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  });
+  // dark.addTo(map)
+  // google street 
+  googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  });
+  // googleStreets.addTo(map);
+
+  //google satellite
+  googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+  });
+  // googleSat.addTo(map)
+  // marker
+  var myIcon = L.icon({
+    iconUrl: 'marker.png',
+    iconSize: [20, 30],
+  });
+  // var l1 = L.marker([20.5937, 78.9629], { icon: myIcon, draggable: false });
+  // var popup = l1.bindPopup('This is the nagpur. ' + l1.getLatLng())
+  // popup.addTo(map);
+
+
+  // var l2 = L.marker([19.5008, 78.907], { icon: myIcon, draggable: false });
+  // var popup = l2.bindPopup('This is the nagpur. ' + l2.getLatLng())
+  // popup.addTo(map);
+  // console.log(l1.toGeoJSON())
+
+  // geojson ploting
+  var pointData = L.geoJSON(pointjson, {
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        fillColor: 'red',
+        fillOpacity: 1,
+        color: '#c0c0c0',
+        radius: 6
+      });
+    },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(`<b> Severity: </b>` + feature.properties.name);
+    }
+  }).addTo(map);
+
+  var s_npp = L.geoJSON(s_npp, {
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        fillColor: 'orange',
+        fillOpacity: 1,
+        color: '#c0c0c0',
+        radius: 6
+      });
+    },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(`<b> Severity: </b>` + feature.properties.name);
+    }
+  }).addTo(map);
+
+  var s_npp_375 = L.geoJSON(s_npp_375, {
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        fillColor: 'green',
+        fillOpacity: 1,
+        color: '#c0c0c0',
+        radius: 6
+      });
+    },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(`<b> Severity: </b>` + feature.properties.name);
+    }
+  }).addTo(map);
+
+
+  // var lineData = L.geoJSON(lineJson).addTo(map)
+  // var polygonData = L.geoJSON(polygonJson, {
+  //     onEachFeature: function (feature, layer) {
+  //         layer.bindPopup(`<b>Name: </b>` + feature.properties.name)
+  //     },
+  //     style: {
+  //         fillColor: 'red',
+  //         fillOpacity: 1,
+  //         color: '#c0c0c0',
+  //     }
+  // }).addTo(map);
+
+  // layer controller
+  var baseMaps = {
+    "OSM": osm,
+    "Water color map": watercolor,
+    "Dark": dark,
+    "Google Street": googleStreets,
+    "Google Satellite": googleSat,
+  };
+
+
+  var overlayMaps = {
+    // "First Marker": l1,
+    // "Second Marker": l2,
+    "Aqua-MODIS": pointData,
+    "S-NPP VIIRS-750": s_npp,
+    "S-NPP VIIRS-375": s_npp_375
+
+  };
+
+  L.control.layers(baseMaps, overlayMaps, { collapsed: true }).addTo(map);
+  // events
+  map.on('mouseover', function () {
+    console.log('your mouse is over the map')
+  })
+
+  map.on('mousemove', function (e) {
+    document.getElementsByClassName('coordinate')[0].innerHTML = ' lat: ' + e.latlng.lat + ' lng: ' + e.latlng.lng;
+    console.log(' lat: ' + e.latlng.lat, ' lng: ' + e.latlng.lng)
+  })
+
+
+
+
+
+  // .... tracking...........
+  if (!navigator.geolocation) {
+    console.log("Your browser doesn't support geolocation feature!")
+  } else {
+    setInterval(() => {
+      navigator.geolocation.getCurrentPosition(getPosition)
+    });
+  }
+
+
+
+
+  var lat, long;
+  var marker, circle;
+
+  function getPosition(position) {
+    console.log(position)
+    lat = position.coords.latitude
+    long = position.coords.longitude
+    var accuracy = position.coords.accuracy
+
+    if (marker) {
+      map.removeLayer(marker)
+    }
+
+    if (circle) {
+      map.removeLayer(circle)
+    }
+
+    marker = L.marker([lat, long])
+    circle = L.circle([lat, long], { radius: accuracy })
+
+    var featureGroup = L.featureGroup([marker, circle]).addTo(map)
+
+    // map.fitBounds(featureGroup.getBounds())
+
+    console.log("Your coordinate is: Lat: " + lat + " Long: " + long + " Accuracy: " + accuracy)
+
+
+
+
+  }
+
+
+  // console.log("the latitute issssssssssssssssss: "+marker)
+
+  // ...........routing............
+  // var routmarker=L.marker([28.2380, 83.9956], { icon: myIcon }).addTo(map);
+  map.on('click', function (e) {
+    console.log(e)
+    var newMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: false }).addTo(map);
+    L.Routing.control({
+      waypoints: [
+        L.latLng(lat, long),
+        L.latLng(e.latlng.lat, e.latlng.lng)
+      ]
+    }).addTo(map);
+  });
+
+      // .on('routesfound', function (e) {
+			// 	var routes = e.routes;
+			// 	console.log(routes);
+
+			// 	e.routes[0].coordinates.forEach(function (coord, index) {
+			// 		setTimeout(function () {
+			// 			marker.setLatLng([coord.lat, coord.lng]);
+			// 		}, 100 * index)
+			// 	})
+
+			// }).addTo(map);
+
+
+
+
+
+</script>
