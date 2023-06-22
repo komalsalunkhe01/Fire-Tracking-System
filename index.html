@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" />
-  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" /> -->
+ 
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -55,9 +55,7 @@
     <h1>Fire Tracking System</h1>
     
 
-    <!-- <nav>
-       
-    </nav> -->
+    
    
 </header>
 
@@ -76,11 +74,7 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
 
   </script>
-  <!-- bootstrap -->
-  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
-  
+ 
 
 <!-- location -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
@@ -132,15 +126,7 @@
     iconUrl: 'marker.png',
     iconSize: [20, 30],
   });
-  // var l1 = L.marker([20.5937, 78.9629], { icon: myIcon, draggable: false });
-  // var popup = l1.bindPopup('This is the nagpur. ' + l1.getLatLng())
-  // popup.addTo(map);
 
-
-  // var l2 = L.marker([19.5008, 78.907], { icon: myIcon, draggable: false });
-  // var popup = l2.bindPopup('This is the nagpur. ' + l2.getLatLng())
-  // popup.addTo(map);
-  // console.log(l1.toGeoJSON())
 
   // geojson ploting
   var pointData = L.geoJSON(pointjson, {
@@ -186,17 +172,7 @@
   }).addTo(map);
 
 
-  // var lineData = L.geoJSON(lineJson).addTo(map)
-  // var polygonData = L.geoJSON(polygonJson, {
-  //     onEachFeature: function (feature, layer) {
-  //         layer.bindPopup(`<b>Name: </b>` + feature.properties.name)
-  //     },
-  //     style: {
-  //         fillColor: 'red',
-  //         fillOpacity: 1,
-  //         color: '#c0c0c0',
-  //     }
-  // }).addTo(map);
+ 
 
   // layer controller
   var baseMaps = {
@@ -209,8 +185,7 @@
 
 
   var overlayMaps = {
-    // "First Marker": l1,
-    // "Second Marker": l2,
+  
     "Aqua-MODIS": pointData,
     "S-NPP VIIRS-750": s_npp,
     "S-NPP VIIRS-375": s_npp_375
@@ -266,7 +241,7 @@
 
     var featureGroup = L.featureGroup([marker, circle]).addTo(map)
 
-    // map.fitBounds(featureGroup.getBounds())
+   
 
     console.log("Your coordinate is: Lat: " + lat + " Long: " + long + " Accuracy: " + accuracy)
 
@@ -276,7 +251,7 @@
   }
 
 
-  // console.log("the latitute issssssssssssssssss: "+marker)
+
 
   // ...........routing............
   // var routmarker=L.marker([28.2380, 83.9956], { icon: myIcon }).addTo(map);
@@ -290,21 +265,5 @@
       ]
     }).addTo(map);
   });
-
-      // .on('routesfound', function (e) {
-			// 	var routes = e.routes;
-			// 	console.log(routes);
-
-			// 	e.routes[0].coordinates.forEach(function (coord, index) {
-			// 		setTimeout(function () {
-			// 			marker.setLatLng([coord.lat, coord.lng]);
-			// 		}, 100 * index)
-			// 	})
-
-			// }).addTo(map);
-
-
-
-
 
 </script>
